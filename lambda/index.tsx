@@ -4,18 +4,19 @@
 
 import * as React from 'react'
 import * as Alexa from 'ask-sdk'
+import { interfaces } from 'ask-sdk-model'
 import { AplDocument } from 'ask-sdk-jsx-for-apl'
 import { FruitsMainPageApl } from './apl/FruitsMainPageApl'
 import { FruitDetailPageApl } from './apl/FruitDetailPage/FruitDetailPageApl'
 import * as Utils from './utils'
 
 class LaunchIntentHandler {
-  canHandle(handlerInput) {
+  canHandle(handlerInput: Alexa.HandlerInput) {
     return (
       Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest'
     )
   }
-  handle(handlerInput) {
+  handle(handlerInput: Alexa.HandlerInput) {
     const responseBuilder = handlerInput.responseBuilder
     if (Utils.supportsAPL(handlerInput)) {
       const FruitsMainPageAPLDocument = getMainMenuAplDocument(handlerInput)
@@ -32,19 +33,23 @@ class LaunchIntentHandler {
 }
 
 class MainMenuIntentHandler {
-  canHandle(handlerInput) {
+  canHandle(handlerInput: Alexa.HandlerInput) {
+    const userEventArgs = Alexa.getRequest<
+      interfaces.alexa.presentation.apl.UserEvent
+    >(handlerInput.requestEnvelope).arguments
+
     return (
       (Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest' &&
         Alexa.getIntentName(handlerInput.requestEnvelope) ===
           'MainMenuIntent') ||
       (Alexa.getRequestType(handlerInput.requestEnvelope) ===
         'Alexa.Presentation.APL.UserEvent' &&
-        Alexa.getRequest(handlerInput.requestEnvelope).arguments.length > 0 &&
-        Alexa.getRequest(handlerInput.requestEnvelope).arguments[0] ===
-          'goBack')
+        userEventArgs !== undefined &&
+        userEventArgs.length > 0 &&
+        userEventArgs[0] === 'goBack')
     )
   }
-  handle(handlerInput) {
+  handle(handlerInput: Alexa.HandlerInput) {
     const responseBuilder = handlerInput.responseBuilder
     if (Utils.supportsAPL(handlerInput)) {
       const FruitsMainPageAPLDocument = getMainMenuAplDocument(handlerInput)
@@ -61,7 +66,7 @@ class MainMenuIntentHandler {
 }
 
 class FruitSelectIntentHandler {
-  canHandle(handlerInput) {
+  canHandle(handlerInput: Alexa.HandlerInput) {
     return (
       Alexa.getRequestType(handlerInput.requestEnvelope) ===
         'Alexa.Presentation.APL.UserEvent' ||
@@ -70,15 +75,17 @@ class FruitSelectIntentHandler {
           'FruitSelectIntent')
     )
   }
-  handle(handlerInput) {
+  handle(handlerInput: Alexa.HandlerInput) {
     const responseBuilder = handlerInput.responseBuilder
     let fruitName
     if (
       Alexa.getRequestType(handlerInput.requestEnvelope) ===
       'Alexa.Presentation.APL.UserEvent'
     ) {
-      const intentRequest = Alexa.getRequest(handlerInput.requestEnvelope)
-      fruitName = intentRequest.arguments[0]
+      const intentRequest = Alexa.getRequest<
+        interfaces.alexa.presentation.apl.UserEvent
+      >(handlerInput.requestEnvelope)
+      if (intentRequest.arguments) fruitName = intentRequest.arguments[0]
     } else {
       fruitName = Alexa.getSlotValue(handlerInput.requestEnvelope, 'fruit')
     }
@@ -106,7 +113,7 @@ class FruitSelectIntentHandler {
   }
 }
 
-function getMainMenuAplDocument(handlerInput) {
+function getMainMenuAplDocument(handlerInput: Alexa.HandlerInput) {
   const viewportProfile = Alexa.getViewportProfile(handlerInput.requestEnvelope)
   return new AplDocument(
     <FruitsMainPageApl viewportProfile={viewportProfile}></FruitsMainPageApl>
