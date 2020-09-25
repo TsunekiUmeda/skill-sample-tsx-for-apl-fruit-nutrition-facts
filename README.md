@@ -1,6 +1,6 @@
 ## Sample Skill - Fruits Nutrition Facts
 
-Personal project to refactor ask-sdk-jsx into tsx
+Personal project to refactor ask-sdk-jsx skill into tsx
 
 JSX for APL (https://github.com/alexa-labs/ask-sdk-jsx-for-apl)
 
