@@ -6,7 +6,28 @@ import * as FruitInfo from './data/fruit_info.json'
 import * as FruitSkillMetadata from './data/fruit_skill_metadata.json'
 import * as Alexa from 'ask-sdk'
 
-const supportsAPL = handlerInput => {
+export type Viewport = {
+  size: string
+  listRowCount: number
+  rowTopMargin: string
+  rowHeight: string
+  imageWidth: string
+  imageHeight: string
+}
+
+export type FruitsInfo = {
+  name: string
+  sourceUrl: string
+  nutritionInfo: {
+    Amount: string
+    'Total Calories': string
+    Carbohydrate: string
+    Protein: string
+    Fat: string
+  }
+}
+
+export const supportsAPL = (handlerInput: Alexa.HandlerInput): boolean => {
   const supportedInterfaces = Alexa.getSupportedInterfaces(
     handlerInput.requestEnvelope
   )
@@ -14,7 +35,7 @@ const supportsAPL = handlerInput => {
   return aplInterface !== null && aplInterface !== undefined
 }
 
-const getPageProperties = viewportProfile => {
+export const getPageProperties = (viewportProfile: string): Viewport => {
   switch (viewportProfile) {
     case 'HUB-ROUND-SMALL':
       return FruitSkillMetadata.properties.dimensions.smallRoundViewport
@@ -25,25 +46,28 @@ const getPageProperties = viewportProfile => {
   }
 }
 
-const splitArray = (input, spacing) => {
-  var output = []
+export const splitArray = (
+  input: FruitsInfo[],
+  spacing: Viewport['listRowCount']
+) => {
+  var output = [{}]
   for (var i = 0; i < input.length; i += spacing) {
     output[output.length] = input.slice(i, i + spacing)
   }
   return output
 }
 
-const getFruitInfo = fruitName => {
+export const getFruitInfo = (fruitName: string): FruitsInfo => {
   return FruitInfo.data.filter(
     f => f.name.toLowerCase() === fruitName.toLowerCase()
   )[0]
 }
 
-const getMessage = message => {
+export const getMessage = (message: string): string => {
   return FruitSkillMetadata.messages[message]
 }
 
-const getFruitSpeechDataSource = fruitName => {
+export const getFruitSpeechDataSource = (fruitName: string): string => {
   const fruitNutritionInfo = getFruitInfo(fruitName).nutritionInfo
   let fruitNutritionInfoSsml = `<speak>Per <say-as interpret-as='cardinal'>${getNumber(
     fruitNutritionInfo.Amount
@@ -63,18 +87,10 @@ const getFruitSpeechDataSource = fruitName => {
   return fruitNutritionInfoSsml
 }
 
-const getNumber = numberWithUnit => {
+const getNumber = (numberWithUnit: string): string => {
   if (numberWithUnit.includes('gr')) {
     return numberWithUnit.slice(0, numberWithUnit.indexOf('gr'))
   } else {
     return numberWithUnit.slice(0, numberWithUnit.indexOf('cal'))
   }
-}
-module.exports = {
-  getPageProperties,
-  splitArray,
-  supportsAPL,
-  getFruitInfo,
-  getMessage,
-  getFruitSpeechDataSource,
 }
