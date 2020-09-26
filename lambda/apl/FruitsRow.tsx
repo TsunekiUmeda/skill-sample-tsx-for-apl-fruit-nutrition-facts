@@ -4,59 +4,67 @@
 
 import * as React from 'react'
 import { Container, Text, Image, TouchWrapper } from 'ask-sdk-jsx-for-apl'
+import { FruitsInfo, Viewport } from '../utils'
 
-class FruitsRow extends React.Component {
-  constructor(props) {
-    super()
-    this.fruitRowData = props.fruitRowData
-    this.pageProperties = props.pageProperties
-  }
-  render() {
-    return (
-      <Container
-        direction='row'
-        width='100vw'
-        height={this.pageProperties.rowHeight}>
-        {this.fruitRowData.map(fruit => {
-          const touchCommand = {
+type Command = {
+  type: string
+  description?: string
+  delay?: number | string
+  screenLock?: boolean | string
+  when?: boolean | string
+  [key: string]: any
+}
+
+type FruitsRowProps = {
+  fruitRowData: FruitsInfo[]
+  pageProperties: Viewport
+}
+
+export const FruitsRow = (props: FruitsRowProps): JSX.Element => {
+  const fruitRowData = props.fruitRowData
+  const pageProperties = props.pageProperties
+
+  console.log('************ FruitsRow 3')
+  return (
+    <Container direction='row' width='100vw' height={pageProperties.rowHeight}>
+      {fruitRowData.map(fruit => {
+        const touchCommand: Command[] = [
+          {
             type: 'SendEvent',
             arguments: [fruit.name],
-          }
-          return (
-            <Container
-              width={`${100 / this.fruitRowData.length}vw`}
-              top={this.pageProperties.rowTopMargin}
-              height='100%'
-              alignItems='center'
-              paddingLeft='16dp'
-              paddingBottom='16dp'
-              paddingRight='16dp'>
-              <Text
-                width='100%'
-                height='52dp'
-                paddingBottom='12dp'
-                textAlign='center'
-                textAlignVertical='center'
-                fontSize='22dp'
-                text={fruit.name}
+          },
+        ]
+        return (
+          <Container
+            width={`${100 / fruitRowData.length}vw`}
+            top={pageProperties.rowTopMargin}
+            height='100%'
+            alignItems='center'
+            paddingLeft='16dp'
+            paddingBottom='16dp'
+            paddingRight='16dp'>
+            <Text
+              width='100%'
+              height='52dp'
+              paddingBottom='12dp'
+              textAlign='center'
+              textAlignVertical='center'
+              fontSize='22dp'
+              text={fruit.name}
+            />
+            <TouchWrapper onPress={touchCommand}>
+              <Image
+                width={pageProperties.imageWidth}
+                height={pageProperties.imageHeight}
+                borderRadius='100vw'
+                scale='best-fill'
+                align='center'
+                source={fruit.sourceUrl}
               />
-              <TouchWrapper onPress={touchCommand}>
-                <Image
-                  width={this.pageProperties.imageWidth}
-                  height={this.pageProperties.imageHeight}
-                  borderRadius='100vw'
-                  scale='best-fill'
-                  align='center'
-                  source={fruit.sourceUrl}
-                />
-              </TouchWrapper>
-            </Container>
-          )
-        })}
-      </Container>
-    )
-  }
-}
-module.exports = {
-  FruitsRow,
+            </TouchWrapper>
+          </Container>
+        )
+      })}
+    </Container>
+  )
 }
