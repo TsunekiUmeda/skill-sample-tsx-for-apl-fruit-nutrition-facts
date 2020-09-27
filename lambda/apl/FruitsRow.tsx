@@ -8,10 +8,6 @@ import { FruitsInfo, Viewport } from '../utils'
 
 type Command = {
   type: string
-  description?: string
-  delay?: number | string
-  screenLock?: boolean | string
-  when?: boolean | string
   [key: string]: any
 }
 
@@ -24,7 +20,6 @@ export const FruitsRow = (props: FruitsRowProps): JSX.Element => {
   const fruitRowData = props.fruitRowData
   const pageProperties = props.pageProperties
 
-  console.log('************ FruitsRow 3')
   return (
     <Container direction='row' width='100vw' height={pageProperties.rowHeight}>
       {fruitRowData.map(fruit => {
