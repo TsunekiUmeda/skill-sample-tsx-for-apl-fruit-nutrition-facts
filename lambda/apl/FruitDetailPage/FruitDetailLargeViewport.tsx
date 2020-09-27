@@ -23,16 +23,8 @@ export const FruitDetailLargeViewport: React.FC<{
             scale='best-fill'
             source={FruitSkillMetadata.properties.backgroundImageSourceUrl}
           />
-          <AlexaHeader
-            headerTitle={Utils.getFruitInfo(fruitName).name}
-            headerBackButton={true}
-          />
-          <Container
-            width='100vw'
-            height='60vh'
-            top={50}
-            alignItems='center'
-            direction='row'>
+          <AlexaHeader headerTitle={Utils.getFruitInfo(fruitName).name} headerBackButton={true} />
+          <Container width='100vw' height='60vh' top={50} alignItems='center' direction='row'>
             <Image
               width='50vw'
               height='100%'

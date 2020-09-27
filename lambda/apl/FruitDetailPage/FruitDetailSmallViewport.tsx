@@ -8,9 +8,7 @@ import * as FruitSkillMetadata from '../../data/fruit_skill_metadata.json'
 import { APL, MainTemplate, Container, Image } from 'ask-sdk-jsx-for-apl'
 import { FruitNutritionInfo } from './FruitNutritionInfo'
 
-export const FruitDetailSmallViewport: React.FC<{
-  fruitName: string
-}> = ({ fruitName }) => {
+export const FruitDetailSmallViewport: React.FC<{ fruitName: string }> = ({ fruitName }) => {
   return (
     <APL theme='dark'>
       <MainTemplate parameters={['nutritionSpeechData']}>
