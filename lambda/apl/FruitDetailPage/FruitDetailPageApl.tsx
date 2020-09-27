@@ -5,22 +5,20 @@
 import * as React from 'react'
 import { FruitDetailLargeViewport } from './FruitDetailLargeViewport'
 import { FruitDetailSmallViewport } from './FruitDetailSmallViewport'
+import { Viewport } from '../../utils'
 
-class FruitDetailPageApl extends React.Component {
-  constructor(props) {
-    super()
-    this.fruitName = props.fruitName
-    this.pageInfo = props.pageInfo
-  }
-  render() {
-    console.log('FruitDetailPageApl')
-    if (this.pageInfo.size === 'small') {
-      return <FruitDetailSmallViewport fruitName={this.fruitName} />
-    } else {
-      return <FruitDetailLargeViewport fruitName={this.fruitName} />
-    }
-  }
+type FruitDetailPageAplProps = {
+  fruitName: string
+  pageInfo: Viewport
 }
-module.exports = {
-  FruitDetailPageApl,
+
+export const FruitDetailPageApl = (props: FruitDetailPageAplProps) => {
+  const fruitName = props.fruitName
+  const pageInfo = props.pageInfo
+
+  if (pageInfo.size === 'small') {
+    return <FruitDetailSmallViewport fruitName={fruitName} />
+  } else {
+    return <FruitDetailLargeViewport fruitName={fruitName} />
+  }
 }
