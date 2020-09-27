@@ -12,7 +12,7 @@ type FruitDetailPageAplProps = {
   pageInfo: Viewport
 }
 
-export const FruitDetailPageApl = (props: FruitDetailPageAplProps) => {
+export const FruitDetailPageApl = (props: FruitDetailPageAplProps): JSX.Element => {
   const fruitName = props.fruitName
   const pageInfo = props.pageInfo
 
