@@ -46,9 +46,10 @@ export const getPageProperties = (viewportProfile: string): Viewport => {
   }
 }
 
-export const splitArray = (input: FruitsInfo[], spacing: number) => {
-  console.log('********* splitArray input ' + JSON.stringify(input))
-
+export const splitArray = (
+  input: FruitsInfo[],
+  spacing: number
+): FruitsInfo[][] => {
   var output = []
   for (var i = 0; i < input.length; i += spacing) {
     output[output.length] = input.slice(i, i + spacing)
