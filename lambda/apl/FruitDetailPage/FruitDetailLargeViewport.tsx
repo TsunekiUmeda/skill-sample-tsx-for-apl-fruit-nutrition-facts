@@ -9,52 +9,44 @@ import { APL, MainTemplate, Container, Image } from 'ask-sdk-jsx-for-apl'
 import { AlexaHeader } from 'ask-sdk-jsx-for-apl/alexa-layouts'
 import { FruitNutritionInfo } from './FruitNutritionInfo'
 
-class FruitDetailLargeViewport extends React.Component {
-  constructor(props) {
-    super()
-    this.fruitName = props.fruitName
-    this.fruitInfo = Utils.getFruitInfo(props.fruitName)
-  }
-  render() {
-    return (
-      <APL theme='dark'>
-        <MainTemplate>
-          <Container width='100vw' height='100vh'>
+export const FruitDetailLargeViewport: React.FC<{
+  fruitName: string
+}> = ({ fruitName }) => {
+  return (
+    <APL theme='dark'>
+      <MainTemplate>
+        <Container width='100vw' height='100vh'>
+          <Image
+            width='100vw'
+            height='100vh'
+            position='absolute'
+            scale='best-fill'
+            source={FruitSkillMetadata.properties.backgroundImageSourceUrl}
+          />
+          <AlexaHeader
+            headerTitle={Utils.getFruitInfo(fruitName).name}
+            headerBackButton={true}
+          />
+          <Container
+            width='100vw'
+            height='60vh'
+            top={50}
+            alignItems='center'
+            direction='row'>
             <Image
-              width='100vw'
-              height='100vh'
-              position='absolute'
+              width='50vw'
+              height='100%'
+              paddingLeft='60dp'
+              borderRadius='100vw'
               scale='best-fill'
-              source={FruitSkillMetadata.properties.backgroundImageSourceUrl}
+              source={Utils.getFruitInfo(fruitName).sourceUrl}
             />
-            <AlexaHeader
-              headerTitle={this.fruitInfo.name}
-              headerBackButton={true}
-            />
-            <Container
-              width='100vw'
-              height='60vh'
-              top={50}
-              alignItems='center'
-              direction='row'>
-              <Image
-                width='50vw'
-                height='100%'
-                paddingLeft='60dp'
-                borderRadius='100vw'
-                scale='best-fill'
-                source={this.fruitInfo.sourceUrl}
-              />
-              <Container width='50vw' height='100%' alignItems='center'>
-                <FruitNutritionInfo fruitName={this.fruitName} />
-              </Container>
+            <Container width='50vw' height='100%' alignItems='center'>
+              <FruitNutritionInfo fruitName={fruitName} />
             </Container>
           </Container>
-        </MainTemplate>
-      </APL>
-    )
-  }
-}
-module.exports = {
-  FruitDetailLargeViewport,
+        </Container>
+      </MainTemplate>
+    </APL>
+  )
 }
