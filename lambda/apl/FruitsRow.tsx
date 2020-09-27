@@ -37,7 +37,8 @@ export const FruitsRow = (props: FruitsRowProps): JSX.Element => {
             alignItems='center'
             paddingLeft='16dp'
             paddingBottom='16dp'
-            paddingRight='16dp'>
+            paddingRight='16dp'
+          >
             <Text
               width='100%'
               height='52dp'

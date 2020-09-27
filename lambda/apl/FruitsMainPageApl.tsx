@@ -13,7 +13,7 @@ import { FruitsRow } from './FruitsRow'
 
 export const FruitsMainPageApl: React.FC<{
   viewportProfile: ViewportProfile
-}> = ({ viewportProfile }) => {
+}> = ({ viewportProfile }): JSX.Element => {
   const pageProperties = Utils.getPageProperties(viewportProfile)
   const fruitRows = Utils.splitArray(FruitInfo.data, pageProperties.listRowCount)
 

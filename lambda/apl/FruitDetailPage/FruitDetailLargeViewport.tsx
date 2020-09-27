@@ -11,7 +11,7 @@ import { FruitNutritionInfo } from './FruitNutritionInfo'
 
 export const FruitDetailLargeViewport: React.FC<{
   fruitName: string
-}> = ({ fruitName }) => {
+}> = ({ fruitName }): JSX.Element => {
   return (
     <APL theme='dark'>
       <MainTemplate>
