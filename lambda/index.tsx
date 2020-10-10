@@ -10,10 +10,10 @@ import { FruitsMainPageApl } from './apl/FruitsMainPageApl'
 import { FruitDetailPageApl } from './apl/FruitDetailPage/FruitDetailPageApl'
 import * as Utils from './utils'
 
-class LaunchIntentHandler {
+const LaunchIntentHandler = {
   canHandle(handlerInput: Alexa.HandlerInput) {
     return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest'
-  }
+  },
   handle(handlerInput: Alexa.HandlerInput) {
     const responseBuilder = handlerInput.responseBuilder
     if (Utils.supportsAPL(handlerInput)) {
@@ -25,10 +25,10 @@ class LaunchIntentHandler {
     } else {
       return responseBuilder.speak(Utils.getMessage('NOT_SUPPORT_MESSAGE')).getResponse()
     }
-  }
+  },
 }
 
-class MainMenuIntentHandler {
+const MainMenuIntentHandler = {
   canHandle(handlerInput: Alexa.HandlerInput) {
     const userEventArgs = Alexa.getRequest<interfaces.alexa.presentation.apl.UserEvent>(
       handlerInput.requestEnvelope
@@ -42,7 +42,7 @@ class MainMenuIntentHandler {
         userEventArgs.length > 0 &&
         userEventArgs[0] === 'goBack')
     )
-  }
+  },
   handle(handlerInput: Alexa.HandlerInput) {
     const responseBuilder = handlerInput.responseBuilder
     if (Utils.supportsAPL(handlerInput)) {
@@ -54,17 +54,17 @@ class MainMenuIntentHandler {
     } else {
       return responseBuilder.speak(Utils.getMessage('NOT_SUPPORT_MESSAGE')).getResponse()
     }
-  }
+  },
 }
 
-class FruitSelectIntentHandler {
+const FruitSelectIntentHandler = {
   canHandle(handlerInput: Alexa.HandlerInput) {
     return (
       Alexa.getRequestType(handlerInput.requestEnvelope) === 'Alexa.Presentation.APL.UserEvent' ||
       (Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest' &&
         Alexa.getIntentName(handlerInput.requestEnvelope) === 'FruitSelectIntent')
     )
-  }
+  },
 
   handle(handlerInput: Alexa.HandlerInput) {
     const responseBuilder = handlerInput.responseBuilder
@@ -94,7 +94,7 @@ class FruitSelectIntentHandler {
     } else {
       return responseBuilder.speak(Utils.getMessage('NOT_SUPPORT_MESSAGE')).getResponse()
     }
-  }
+  },
 }
 
 function getMainMenuAplDocument(handlerInput: Alexa.HandlerInput) {
@@ -104,12 +104,6 @@ function getMainMenuAplDocument(handlerInput: Alexa.HandlerInput) {
   ).getDirective()
 }
 
-const handler = Alexa.SkillBuilders.custom()
-  .addRequestHandlers(
-    new LaunchIntentHandler(),
-    new MainMenuIntentHandler(),
-    new FruitSelectIntentHandler()
-  )
+export const handler = Alexa.SkillBuilders.custom()
+  .addRequestHandlers(LaunchIntentHandler, MainMenuIntentHandler, FruitSelectIntentHandler)
   .lambda()
-
-module.exports = { handler }
